@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <!-- COMPLETELY OVERRIDE -->
+    <style>
+        /* Nuke and rebuild */
+        * {
+            box-sizing: border-box;
+        }
+
+        #header {
+            all: initial !important;
+            background: red !important;
+            color: white !important;
+            height: 80px !important;
+            display: flex !important;
+            align-items: center !important;
+            padding: 0 20px !important;
+            font-family: Arial !important;
+        }
+
+        #site-name {
+            all: initial !important;
+            font-size: 32px !important;
+            color: yellow !important;
+            font-weight: bold !important;
+        }
+
+        body {
+            background: blue !important;
+            color: white !important;
+        }
+    </style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name" style="color: lime !important; font-size: 40px !important;">
+    <a href="{% url 'admin:index' %}">✅ CUSTOM ADMIN ✅</a>
+</h1>
+{% endblock %}

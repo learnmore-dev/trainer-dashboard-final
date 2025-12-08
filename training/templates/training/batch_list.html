@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #f4f6f9;
+  }
+
+  h1 {
+    text-align: center;
+    color: #0d6efd;
+    margin: 30px 0;
+    font-weight: 700;
+  }
+
+  .table-container {
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th, td {
+    text-align: center;
+    vertical-align: middle !important;
+    font-size: 0.95rem;
+  }
+
+  th {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  .session-row td {
+    background-color: #e2e6ea;
+    text-align: left;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  a.btn-view {
+    display: inline-block;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+
+  a.btn-view:hover {
+    background-color: #0a58ca;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-log-session {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #198754;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-log-session:hover {
+    background-color: #145c33;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+</style>
+
+<div class="table-container">
+  <h1>Batches</h1>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Batch Name</th>
+          <th>Trainer</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Total Days</th>
+          <th>Days Remaining</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for batch in batches %}
+          <tr>
+            <td>{{ batch.name }}</td>
+            <td>{{ batch.trainer.username }}</td>
+            <td>{{ batch.start_datetime|date:"Y-m-d H:i" }}</td>
+            <td>{{ batch.end_datetime|date:"Y-m-d H:i" }}</td>
+            <td>{{ batch.total_days }}</td>
+            <td>{{ batch.days_remaining }}</td>
+            <td><a href="{% url 'batch_detail' batch.id %}" class="btn-view">View</a></td>
+          </tr>
+
+          {% comment %} Show Work Sessions for this batch {% endcomment %}
+          {% for session in batch.sessions.all %}
+            <tr class="session-row">
+              <td colspan="2"><strong>Trainer:</strong> {{ session.trainer.username }}</td>
+              <td colspan="2"><strong>Start:</strong> {{ session.start_time|date:"Y-m-d H:i" }}</td>
+              <td colspan="1"><strong>End:</strong> {{ session.end_time|date:"Y-m-d H:i" }}</td>
+              <td colspan="1"><strong>Hours:</strong> {{ session.hours_spent|floatformat:2 }}</td>
+              <td>{{ session.description }}</td>
+            </tr>
+          {% empty %}
+          {% endfor %}
+        {% empty %}
+          <tr>
+            <td colspan="7">No batches available.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if user.role == 'trainer' %}
+    <a href="{% url 'session_create' %}" class="btn-log-session">Log a Work Session</a>
+  {% endif %}
+</div>
+{% endblock %}

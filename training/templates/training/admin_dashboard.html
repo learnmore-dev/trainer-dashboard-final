@@ -1,0 +1,16 @@
+{% extends 'training/base.html' %}
+{% block content %}
+  <h2>Admin Dashboard</h2>
+  <h3>Trainers Overview</h3>
+
+  {% for item in trainers %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+      <strong>{{ item.trainer.username }}</strong> — Hours this week: {{ item.hours_week }}
+      <ul>
+        {% for b in item.batches %}
+          <li>{{ b.name }} — remaining days: {{ b.days_remaining }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% endblock %}

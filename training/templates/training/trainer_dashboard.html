@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  .dashboard-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  h2 {
+    color: #0d6efd;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .stats {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+  }
+
+  .batch-list .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-log-session {
+    margin-top: 20px;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+  }
+  .btn-log-session:hover {
+    background-color: #0a58ca;
+    color: #fff;
+  }
+</style>
+
+<div class="dashboard-container">
+  <h2>Trainer Dashboard</h2>
+
+  <p class="stats">Hours worked this week: <strong>{{ hours_week }}</strong></p>
+
+  <h3>Your Batches</h3>
+  <ul class="list-group batch-list">
+    {% for b in batches %}
+      <li class="list-group-item">
+        {{ b.name }}
+        <span class="badge bg-secondary">Remaining days: {{ b.days_remaining }}</span>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No batches available</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'session_create' %}" class="btn-log-session">Log a Work Session</a>
+</div>
+{% endblock %}

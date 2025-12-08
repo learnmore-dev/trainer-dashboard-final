@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  .form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #0d6efd;
+    font-weight: 700;
+    margin-bottom: 25px;
+  }
+
+  label {
+    font-weight: 500;
+  }
+
+  .form-control, select, textarea {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .form-control:focus, select:focus, textarea:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.15rem rgba(13,110,253,0.25);
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 15px;
+    transition: background 0.3s;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #0a58ca;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="form-container">
+  <h1>Log Work Session</h1>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="id_batch">Batch:</label>
+      <select name="batch" id="id_batch" class="form-select" required>
+        {% for b in batches %}
+          <option value="{{ b.id }}">{{ b.name }} ({{ b.start_datetime|date:"Y-m-d" }} — {{ b.end_datetime|date:"Y-m-d" }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_start_time">Start Time:</label>
+      <input type="datetime-local" name="start_time" id="id_start_time" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_end_time">End Time:</label>
+      <input type="datetime-local" name="end_time" id="id_end_time" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_description">Description:</label>
+      <textarea name="description" id="id_description" rows="3" class="form-control"></textarea>
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+
+  <a href="{% url 'trainer_dashboard' %}" class="back-link">Back to Dashboard</a>
+</div>
+{% endblock %}

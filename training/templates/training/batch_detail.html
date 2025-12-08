@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  /* Container styling */
+  .batch-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    color: #0d6efd;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  h2 {
+    color: #0d6efd;
+    font-weight: 600;
+    margin-top: 35px;
+    margin-bottom: 15px;
+  }
+
+  .batch-info p {
+    margin: 6px 0;
+    font-size: 1rem;
+  }
+
+  .table thead {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+
+  .table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  .table th, .table td {
+    vertical-align: middle;
+  }
+
+  .btn-custom {
+    display: inline-block;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 10px;
+  }
+
+  .btn-custom:hover {
+    background-color: #0a58ca;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+</style>
+
+<div class="batch-container">
+  <h1>Batch: {{ batch.name }}</h1>
+
+  <div class="batch-info">
+    <p><strong>Trainer:</strong> {{ batch.trainer.username }}</p>
+    <p><strong>Start:</strong> {{ batch.start_datetime|date:"Y-m-d H:i" }}</p>
+    <p><strong>End:</strong> {{ batch.end_datetime|date:"Y-m-d H:i" }}</p>
+    <p><strong>Total days:</strong> {{ batch.total_days }}</p>
+    <p><strong>Days elapsed:</strong> {{ batch.days_elapsed }}</p>
+    <p><strong>Days remaining:</strong> {{ batch.days_remaining }}</p>
+  </div>
+
+  <h2>Work Sessions</h2>
+  {% if sessions %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Trainer</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Hours Spent</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sessions %}
+            <tr>
+              <td>{{ s.trainer.username }}</td>
+              <td>{{ s.start_time|date:"Y-m-d H:i" }}</td>
+              <td>{{ s.end_time|date:"Y-m-d H:i" }}</td>
+              <td>{{ s.hours_spent|floatformat:2 }}</td>
+              <td>{{ s.description }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="fw-bold">Total hours logged in this batch: {{ total_hours|floatformat:2 }} hours</p>
+  {% else %}
+    <p>No sessions logged yet for this batch.</p>
+  {% endif %}
+
+  {% if user.role == 'trainer' %}
+    <a href="{% url 'session_create' %}" class="btn btn-primary btn-custom">Log another Work Session</a>
+  {% endif %}
+  <a href="{% url 'batch_list' %}" class="btn btn-primary btn-custom">Back to batch list</a>
+</div>
+{% endblock %}
