@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from .forms import SignUpForm
-
+from django.contrib.auth import logout
+from django.views.decorators.http import require_http_methods
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -22,3 +23,7 @@ def signup(request):
         form = SignUpForm()
 
     return render(request, 'signup.html', {'form': form})
+@require_http_methods(["GET", "POST"])
+def logout_user(request):
+    logout(request)
+    return redirect('login')

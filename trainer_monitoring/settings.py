@@ -15,12 +15,17 @@ AUTH_USER_MODEL = "core.User"
 SECRET_KEY = 'django-insecure-c)7)qrau47xf1u-$$s-spnus=cx=2$z8^lt7b5z^*d@s7bg&^4'
 DEBUG = True
 ALLOWED_HOSTS = ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = [
+    'http://13.235.132.174:8000',
+]
 
 LOGIN_REDIRECT_URL = 'trainer_dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
-
+#LOGIN_URL = 'login'
+#LOGOUT_REDIRECT_URL = 'login'
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 # ---------------------------
 # Static files
 # ---------------------------
