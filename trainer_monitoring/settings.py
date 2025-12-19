@@ -42,7 +42,31 @@ STATICFILES_DIRS = [
 # ---------------------------
 # Application definition
 # ---------------------------
+JAZZMIN_SETTINGS = {
+    "site_title": "Trainer Monitoring",
+    "site_header": "Trainer Monitoring Admin",
+    "site_brand": "Trainer Admin",
+
+    "welcome_sign": "Welcome Admin",
+
+    # 🔥 FORCE readable theme
+    "theme": "flatly",
+    "dark_mode_theme": None,
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+
+    # Disable theme switch
+    "show_ui_builder": False,
+}
+
+JAZZMIN_SETTINGS["custom_css"] = "core/admin_fix.css"
+
+
+
+
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
