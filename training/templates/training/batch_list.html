@@ -45,13 +45,6 @@
     background-color: #f8f9fa;
   }
 
-  .session-row td {
-    background-color: #e2e6ea;
-    text-align: left;
-    font-size: 0.9rem;
-    padding: 8px 12px;
-  }
-
   a.btn-view {
     display: inline-block;
     background-color: #0d6efd;
@@ -65,24 +58,6 @@
 
   a.btn-view:hover {
     background-color: #0a58ca;
-    color: #fff;
-    transform: translateY(-2px);
-  }
-
-  .btn-log-session {
-    display: inline-block;
-    margin-top: 20px;
-    background-color: #198754;
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .btn-log-session:hover {
-    background-color: #145c33;
     color: #fff;
     transform: translateY(-2px);
   }
@@ -107,25 +82,13 @@
         {% for batch in batches %}
           <tr>
             <td>{{ batch.name }}</td>
-            <td>{{ batch.trainer.username }}</td>
+            <td>{{ batch.trainer.username|default:"Unassigned" }}</td>
             <td>{{ batch.start_datetime|date:"Y-m-d H:i" }}</td>
             <td>{{ batch.end_datetime|date:"Y-m-d H:i" }}</td>
             <td>{{ batch.total_days }}</td>
             <td>{{ batch.days_remaining }}</td>
             <td><a href="{% url 'batch_detail' batch.id %}" class="btn-view">View</a></td>
           </tr>
-
-          {% comment %} Show Work Sessions for this batch {% endcomment %}
-          {% for session in batch.sessions.all %}
-            <tr class="session-row">
-              <td colspan="2"><strong>Trainer:</strong> {{ session.trainer.username }}</td>
-              <td colspan="2"><strong>Start:</strong> {{ session.start_time|date:"Y-m-d H:i" }}</td>
-              <td colspan="1"><strong>End:</strong> {{ session.end_time|date:"Y-m-d H:i" }}</td>
-              <td colspan="1"><strong>Hours:</strong> {{ session.hours_spent|floatformat:2 }}</td>
-              <td>{{ session.description }}</td>
-            </tr>
-          {% empty %}
-          {% endfor %}
         {% empty %}
           <tr>
             <td colspan="7">No batches available.</td>
@@ -134,9 +97,5 @@
       </tbody>
     </table>
   </div>
-
-  {% if user.role == 'trainer' %}
-    <a href="{% url 'session_create' %}" class="btn-log-session">Log a Work Session</a>
-  {% endif %}
 </div>
 {% endblock %}

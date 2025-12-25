@@ -2,6 +2,35 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
+
+class Attendance(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='attendances',
+        null=True,
+        blank=True
+    )
+    
+    login_time = models.DateTimeField(null=True, blank=True)
+    logout_time = models.DateTimeField(null=True, blank=True)
+
+    login_lat = models.FloatField(null=True, blank=True)
+    login_lon = models.FloatField(null=True, blank=True)
+    login_address = models.TextField(null=True, blank=True)
+
+    logout_lat = models.FloatField(null=True, blank=True)
+    logout_lon = models.FloatField(null=True, blank=True)
+    logout_address = models.TextField(null=True, blank=True)
+
+    total_time = models.DurationField(null=True, blank=True)
+
+    def __str__(self):
+        if self.user:
+            return f"{self.user.username} - {self.login_time.date() if self.login_time else 'No login'}"
+        return f"Attendance {self.id}"
+
+
 class Batch(models.Model):
     name = models.CharField(max_length=255)
     trainer = models.ForeignKey(
@@ -26,18 +55,23 @@ class Batch(models.Model):
     @property
     def days_elapsed(self):
         now = timezone.now().date()
-        if now < self.start_datetime.date():
+        start_date = self.start_datetime.date()
+        end_date = self.end_datetime.date()
+        
+        if now < start_date:
             return 0
-        if now > self.end_datetime.date():
+        if now > end_date:
             return self.total_days
-        return (now - self.start_datetime.date()).days + 1
+        return (now - start_date).days + 1
 
     @property
     def days_remaining(self):
         now = timezone.now().date()
-        if now >= self.end_datetime.date():
+        end_date = self.end_datetime.date()
+        
+        if now >= end_date:
             return 0
-        return (self.end_datetime.date() - now).days + 1
+        return (end_date - now).days + 1
 
 
 class WorkSession(models.Model):
@@ -65,6 +99,6 @@ class WorkSession(models.Model):
     @property
     def hours_spent(self):
         if not self.start_time or not self.end_time:
-            return None
+            return 0
         delta = self.end_time - self.start_time
-        return delta.total_seconds() / 3600
+        return round(delta.total_seconds() / 3600, 2)

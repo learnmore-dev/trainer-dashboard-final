@@ -57,6 +57,7 @@
     font-weight: 500;
     transition: background 0.3s, transform 0.2s;
     margin-top: 10px;
+    margin-right: 10px;
   }
 
   .btn-custom:hover {
@@ -70,7 +71,7 @@
   <h1>Batch: {{ batch.name }}</h1>
 
   <div class="batch-info">
-    <p><strong>Trainer:</strong> {{ batch.trainer.username }}</p>
+    <p><strong>Trainer:</strong> {{ batch.trainer.username|default:"Unassigned" }}</p>
     <p><strong>Start:</strong> {{ batch.start_datetime|date:"Y-m-d H:i" }}</p>
     <p><strong>End:</strong> {{ batch.end_datetime|date:"Y-m-d H:i" }}</p>
     <p><strong>Total days:</strong> {{ batch.total_days }}</p>
@@ -98,7 +99,7 @@
               <td>{{ s.start_time|date:"Y-m-d H:i" }}</td>
               <td>{{ s.end_time|date:"Y-m-d H:i" }}</td>
               <td>{{ s.hours_spent|floatformat:2 }}</td>
-              <td>{{ s.description }}</td>
+              <td>{{ s.description|default:"-" }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -109,9 +110,11 @@
     <p>No sessions logged yet for this batch.</p>
   {% endif %}
 
-  {% if user.role == 'trainer' %}
-    <a href="{% url 'session_create' %}" class="btn btn-primary btn-custom">Log another Work Session</a>
-  {% endif %}
-  <a href="{% url 'batch_list' %}" class="btn btn-primary btn-custom">Back to batch list</a>
+  <div class="mt-4">
+    {% if not user.is_superuser %}
+      <a href="{% url 'session_create' %}" class="btn-custom">➕ Log another Work Session</a>
+    {% endif %}
+    <a href="{% url 'batch_list' %}" class="btn-custom">⬅️ Back to batch list</a>
+  </div>
 </div>
 {% endblock %}
