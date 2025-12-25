@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
   .dashboard-container {
@@ -22,12 +21,19 @@
   .stats {
     font-size: 1.1rem;
     margin-bottom: 25px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
   }
 
   .batch-list .list-group-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
   }
 
   .btn-log-session {
@@ -40,6 +46,7 @@
     text-decoration: none;
     font-weight: 500;
     transition: background 0.3s;
+    display: inline-block;
   }
   .btn-log-session:hover {
     background-color: #0a58ca;
@@ -50,20 +57,30 @@
 <div class="dashboard-container">
   <h2>Trainer Dashboard</h2>
 
-  <p class="stats">Hours worked this week: <strong>{{ hours_week }}</strong></p>
+  <div class="stats">
+    <p><strong>Total Hours Worked:</strong> {{ total_hours|default:"0.00"|floatformat:2 }} hours</p>
+    <p><strong>Hours this week:</strong> {{ hours_week|default:"0.00"|floatformat:2 }} hours</p>
+  </div>
 
   <h3>Your Batches</h3>
   <ul class="list-group batch-list">
     {% for b in batches %}
       <li class="list-group-item">
-        {{ b.name }}
-        <span class="badge bg-secondary">Remaining days: {{ b.days_remaining }}</span>
+        <div>
+          <strong>{{ b.name }}</strong><br>
+          <small>{{ b.start_datetime|date:"d M Y" }} to {{ b.end_datetime|date:"d M Y" }}</small>
+        </div>
+        <span class="badge bg-secondary">{{ b.days_remaining }} days remaining</span>
       </li>
     {% empty %}
       <li class="list-group-item">No batches available</li>
     {% endfor %}
   </ul>
 
-  <a href="{% url 'session_create' %}" class="btn-log-session">Log a Work Session</a>
+  <div class="mt-4">
+    <a href="{% url 'session_create' %}" class="btn-log-session">➕ Log a Work Session</a>
+    <a href="{% url 'attendance' %}" class="btn-log-session" style="background-color: #28a745;">📍 Mark Attendance</a>
+  </div>
 </div>
+
 {% endblock %}
