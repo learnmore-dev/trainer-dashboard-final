@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #f4f6f9;
+  }
+
+  h2 {
+    text-align: center;
+    color: #0d6efd;
+    margin-bottom: 25px;
+    font-weight: 700;
+  }
+
+  .table-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  table {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  th, td {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  .btn-view {
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+
+  .btn-view:hover {
+    background-color: #0a58ca;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+  .status-delay {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .status-ontime {
+    background-color: #198754;
+    color: white;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="table-container">
+    <h2>My Batches</h2>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Batch Name</th>
+          <th>Total Hours</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for batch in batches %}
+        <tr>
+          <td class="fw-semibold">{{ batch.name }}</td>
+          <td>{{ batch.total_hours }} h</td>
+
+          <td>
+            {% if batch.delay_hours > 0 %}
+              <span class="status status-delay">Delay</span>
+            {% else %}
+              <span class="status status-ontime">On Time</span>
+            {% endif %}
+          </td>
+
+          <td>
+            <a href="{% url 'training:batch_detail' batch.id %}" class="btn-view">
+              👁 View
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center text-muted">
+            No batches assigned
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

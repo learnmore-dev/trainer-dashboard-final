@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Attendance Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Segoe UI", Arial;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        select, button {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            min-width: 120px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .user-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #343a40;
+            color: white;
+            font-weight: normal;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+            min-width: 70px;
+        }
+        .badge-in { background: #28a745; }
+        .badge-out { background: #007bff; }
+        .badge-absent { background: #dc3545; }
+        .duration-badge {
+            background: #6f42c1;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                width: 100%;
+            }
+            table { font-size: 12px; }
+            th, td { padding: 8px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <h2>📊 Monthly Attendance Report</h2>
+    
+    <div class="filter-section">
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <label for="trainer">👤 Select User:</label>
+                <select name="trainer" id="trainer">
+                    <option value="">All Users</option>
+                    {% for user in trainers %}
+                        <option value="{{ user.id }}" 
+                            {% if selected_trainer|stringformat:"i" == user.id|stringformat:"i" %}selected{% endif %}>
+                            {{ user.get_full_name|default:user.username }}
+                            {% if user.is_staff or user.is_superuser %} (Admin){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="month">📅 Select Month:</label>
+                <select name="month" id="month">
+                    <option value="1" {% if month == 1 %}selected{% endif %}>January</option>
+                    <option value="2" {% if month == 2 %}selected{% endif %}>February</option>
+                    <option value="3" {% if month == 3 %}selected{% endif %}>March</option>
+                    <option value="4" {% if month == 4 %}selected{% endif %}>April</option>
+                    <option value="5" {% if month == 5 %}selected{% endif %}>May</option>
+                    <option value="6" {% if month == 6 %}selected{% endif %}>June</option>
+                    <option value="7" {% if month == 7 %}selected{% endif %}>July</option>
+                    <option value="8" {% if month == 8 %}selected{% endif %}>August</option>
+                    <option value="9" {% if month == 9 %}selected{% endif %}>September</option>
+                    <option value="10" {% if month == 10 %}selected{% endif %}>October</option>
+                    <option value="11" {% if month == 11 %}selected{% endif %}>November</option>
+                    <option value="12" {% if month == 12 %}selected{% endif %}>December</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="year">📅 Select Year:</label>
+                <select name="year" id="year">
+                    {% for y in years %}
+                        <option value="{{ y }}" {% if y == year %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button type="submit">🔍 Generate Report</button>
+            </div>
+        </form>
+    </div>
+    
+    <div>
+        {% if report %}
+            <div style="margin-bottom: 15px; padding: 10px; background: #e9ecef; border-radius: 4px;">
+                <strong>Report Period:</strong> {{ month }}/{{ year }} 
+                {% if selected_trainer %} | 
+                <strong>User:</strong> 
+                    {% for user in trainers %}
+                        {% if user.id|stringformat:"i" == selected_trainer %}
+                            {{ user.get_full_name|default:user.username }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            {% for user_data in report %}
+                <div class="user-section">
+                    <div class="user-name">👤 {{ user_data.name }}</div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Mark In</th>
+                                    <th>Mark Out</th>
+                                    <th>Duration</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in user_data.records %}
+                                    <tr>
+                                        <td>{{ record.date|date:"d-m-Y" }}</td>
+                                        <td>
+                                            <span class="badge badge-{{ record.status|lower }}">
+                                                {{ record.status }}
+                                            </span>
+                                        </td>
+                                        <td>{{ record.mark_in_time }}</td>
+                                        <td>{{ record.mark_out_time }}</td>
+                                        <td>
+                                            {% if record.duration != "--" %}
+                                                <span class="duration-badge">{{ record.duration }}</span>
+                                            {% else %}
+                                                {{ record.duration }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ record.location_name }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; padding: 40px; background: white; border-radius: 8px;">
+                <h3>📭 No attendance records found</h3>
+                <p>No attendance data found for {{ month }}/{{ year }}</p>
+                {% if selected_trainer %}
+                    <p>for the selected user.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

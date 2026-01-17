@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4" style="max-width:600px;">
+  <h4 class="mb-3">Apply Leave</h4>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Leave Date</label>
+      <input type="date" name="leave_date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Reason</label>
+      <textarea
+        name="reason"
+        class="form-control"
+        rows="3"
+        placeholder="Reason for leave"
+        required
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-danger w-100">
+      Apply Leave
+    </button>
+  </form>
+</div>
+
+{% endblock %}

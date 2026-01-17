@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  /* Container styling */
+  .batch-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    color: #0d6efd;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  h2 {
+    color: #0d6efd;
+    font-weight: 600;
+    margin-top: 35px;
+    margin-bottom: 15px;
+  }
+
+  .batch-info p {
+    margin: 6px 0;
+    font-size: 1rem;
+  }
+
+  .table thead {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+
+  .table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  .table th, .table td {
+    vertical-align: middle;
+  }
+
+  .btn-custom {
+    display: inline-block;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+
+  .btn-custom:hover {
+    background-color: #0a58ca;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+
+  /* Add Session Button */
+.btn-add-session {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #198754, #146c43);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 18px rgba(25, 135, 84, 0.35);
+  transition: all 0.3s ease;
+}
+
+.btn-add-session:hover {
+  background: linear-gradient(135deg, #146c43, #0f5132);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(25, 135, 84, 0.45);
+}
+
+</style>
+
+<div class="container mt-4">
+  <h4>{{ batch.name }}</h4>
+
+  <p><strong>Trainer:</strong> {{ batch.trainer.username }}</p>
+  <p><strong>Start Date:</strong> {{ batch.start_date|date:"d M Y" }}</p>
+  <p>
+  <strong>Total Students:</strong>
+  <span class="badge bg-success fs-6">
+    👨‍🎓 {{ batch.student_count }}
+  </span>
+</p>
+
+  <p><strong>Total Hours:</strong> {{ batch.total_hours }} h</p>
+<p><strong>Used Hours:</strong> {{ batch.used_hours }} h</p>
+
+<p>
+  <strong>Remaining Hours:</strong>
+  {% if batch.remaining_hours == 0 %}
+    <span class="text-danger fw-bold">0 h</span>
+  {% else %}
+    {{ batch.remaining_hours }} h
+  {% endif %}
+</p>
+
+{% if batch.delay_hours > 0 %}
+  <p class="text-danger fw-bold">
+    ⏱ Delay Hours: {{ batch.delay_hours }} h
+  </p>
+{% endif %}
+
+
+<p>
+  <strong>Status:</strong>
+
+  {% if batch.delay_hours > 0 %}
+    <span class="status status-delay">⏱ Delay</span>
+  {% else %}
+    <span class="status status-ontime">✔ On Time</span>
+  {% endif %}
+</p>
+
+
+  <hr>
+
+  <h5>Work Sessions</h5>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Hours</th>
+        <th>Topic</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sessions %}
+      <tr>
+        <td>{{ s.session_date }}</td>
+        <td>{{ s.hours_taken }}</td>
+        <td>{{ s.description }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center">No sessions yet</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{% url 'training:session_create' batch.id %}" class="btn-add-session">
+  ➕ Add Session
+</a>
+
+
+
+</div>
+
+{% endblock %}

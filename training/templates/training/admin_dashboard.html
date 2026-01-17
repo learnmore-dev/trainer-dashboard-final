@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+  {% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+
+    <!-- Attendance Report Button at the top -->
+    {% if request.user.is_staff %}
+    <div class="text-right mb-4">
+        <a href="{% url 'training:monthly_attendance_report' %}" class="btn btn-primary">
+            📊 Monthly Attendance Report
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="row text-center mt-4">
+        <div class="col-md-4">
+            <div class="card p-3">Total Batches<br><b>{{ batches.count }}</b></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">Total Trainers<br><b>{{ trainers.count }}</b></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">Total Sessions<br><b>{{ total_sessions }}</b></div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>All Batches</h4>
+    <ul class="list-group">
+        {% for batch in batches %}
+        <li class="list-group-item">
+            {{ batch.name }} — Trainer: {{ batch.trainer.username|default:"NA" }}
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}
+</body>
+</html>

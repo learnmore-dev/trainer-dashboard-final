@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .dashboard-container {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 20px 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  h2 {
+    color: #0d6efd;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .stats {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .batch-list .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+  }
+
+  .btn-log-session {
+    margin-top: 20px;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+    display: inline-block;
+  }
+  .btn-log-session:hover {
+    background-color: #0a58ca;
+    color: #fff;
+  }
+  .leave-btn {
+    margin: 0 0 15px 0;
+    padding-top: 5px;
+  }
+  
+  .dashboard-header {
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0d6efd;
+  }
+  
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+</style>
+
+<div class="container-fluid">
+  <!-- Leave Button - Top Right -->
+  <div class="d-flex justify-content-between align-items-start mt-2">
+    <div></div> <!-- Empty div for spacing -->
+    <div class="leave-btn">
+      <a href="{% url 'training:leave_create' %}" class="btn btn-outline-danger btn-sm">
+        ➖ Apply Leave
+      </a>
+    </div>
+  </div>
+
+  <h4 class="dashboard-header">Trainer Dashboard</h4>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Batch</th>
+        <th>Students</th>
+        <th>Total Hours</th>
+        <th>Remaining Hours</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for b in batches %}
+      <tr>
+        <td>{{ b.name }}</td>
+
+        <!-- ✅ Students Count -->
+        <td>
+          <span class="badge bg-info text-dark">
+            👨‍🎓 {{ b.student_count }}
+          </span>
+        </td>
+
+        <td>{{ b.total_hours }} h</td>
+        <td>{{ b.remaining_hours }} h</td>
+
+        <td>
+          {% if b.delay_hours > 0 %}
+            <span class="badge bg-danger">
+              ⏱ Delay ({{ b.delay_hours }} h)
+            </span>
+          {% else %}
+            <span class="badge bg-success">
+              ✔ On Time
+            </span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

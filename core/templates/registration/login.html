@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body{
+            background:
+                linear-gradient(135deg, rgba(15,14,46,0.9), rgba(38,29,133,0.9)),
+                url("{% static 'bg-pattern.png' %}") center/cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            padding-top: 130px;
+        }
+
+        /* ---------- LOGO ---------- */
+        .top-logo{
+            position: absolute;
+            top: 18px;
+            left: 25px;
+            z-index: 10;
+        }
+
+        .top-logo img{
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px rgba(255,255,255,0.6);
+            background: white;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-bar{
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 14px 0;
+            background: linear-gradient(to right, #6a28ff, #b44dff);
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+        }
+
+        /* ---------- CARD ---------- */
+        .container{
+            width: 900px;
+            background: #ffffff;
+            border-radius: 22px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.45);
+            border: 2px solid #6a28ff;
+            animation: fadeIn 0.7s ease;
+            height: 450px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---------- LEFT IMAGE ---------- */
+        .left{
+            flex: 1;
+            background: linear-gradient(135deg, #f4f1ff, #e9e4ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .left img{
+            max-width: 430px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.25));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float{
+            0%{ transform: translateY(0); }
+            50%{ transform: translateY(-10px); }
+            100%{ transform: translateY(0); }
+        }
+
+        /* ---------- RIGHT FORM ---------- */
+        .right{
+            flex: 1;
+            padding: 55px;
+        }
+
+        h2{
+            margin-bottom: 35px;
+            color: #2c2c2c;
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .input-box{
+            margin-bottom: 20px;
+        }
+
+        .input-box input{
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #bbb;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .input-box input:focus{
+            border-color: #6a28ff;
+            box-shadow: 0 0 10px rgba(106,40,255,0.45);
+        }
+
+        .remember{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .remember a{
+            text-decoration: none;
+            color: #6a28ff;
+            font-weight: 600;
+        }
+
+        .remember a:hover{
+            text-decoration: underline;
+        }
+
+        button{
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6a28ff, #8e4dff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(106,40,255,0.45);
+        }
+
+        button:hover{
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #5820db, #7a3bdd);
+            box-shadow: 0 8px 25px rgba(106,40,255,0.65);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px){
+            .container{
+                flex-direction: column;
+                width: 92%;
+            }
+
+            .left{
+                padding: 25px;
+            }
+
+            .right{
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGO -->
+<div class="top-logo">
+    <img src="{% static 'image.jpeg' %}" alt="logo">
+</div>
+
+<!-- HEADER -->
+<div class="header-bar">
+    <marquee behavior="scroll" direction="left">
+        Welcome to the User Login Page
+    </marquee>
+</div>
+
+<div class="container">
+
+    <div class="left">
+        <img src="{% static 'images.jpeg' %}" alt="login illustration">
+    </div>
+
+    <div class="right">
+        <h2>USER LOGIN</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="input-box">
+                {{ form.username }}
+            </div>
+
+            <div class="input-box">
+                {{ form.password }}
+            </div>
+
+            <div class="remember">
+                <label>
+                    {{ form.remember_me }} Remember me
+                </label>
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit">LOGIN</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
