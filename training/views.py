@@ -273,7 +273,9 @@ def admin_dashboard(request):
     if not request.user.is_superuser:
         return redirect('trainer_dashboard')
     
-    from django.contrib.auth.models import User
+    #from django.contrib.auth.models import User
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
     batches = Batch.objects.all()
     trainers = User.objects.filter(is_staff=True)
     total_sessions = WorkSession.objects.count()
