@@ -23,6 +23,7 @@ def signup(request):
         form = SignUpForm()
 
     return render(request, 'signup.html', {'form': form})
+<<<<<<< HEAD
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -36,3 +37,9 @@ def logout_user(request):
         "status": "success",
         "redirect_url": "/login/"
     })
+=======
+@require_http_methods(["GET", "POST"])
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+>>>>>>> origin/main

@@ -65,6 +65,7 @@
     color: #fff;
     transform: translateY(-2px);
   }
+<<<<<<< HEAD
 
 
   /* Add Session Button */
@@ -170,3 +171,58 @@
 </div>
 
 {% endblock %}
+=======
+</style>
+
+<div class="batch-container">
+  <h1>Batch: {{ batch.name }}</h1>
+
+  <div class="batch-info">
+    <p><strong>Trainer:</strong> {{ batch.trainer.username|default:"Unassigned" }}</p>
+    <p><strong>Start:</strong> {{ batch.start_datetime|date:"Y-m-d H:i" }}</p>
+    <p><strong>End:</strong> {{ batch.end_datetime|date:"Y-m-d H:i" }}</p>
+    <p><strong>Total days:</strong> {{ batch.total_days }}</p>
+    <p><strong>Days elapsed:</strong> {{ batch.days_elapsed }}</p>
+    <p><strong>Days remaining:</strong> {{ batch.days_remaining }}</p>
+  </div>
+
+  <h2>Work Sessions</h2>
+  {% if sessions %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Trainer</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Hours Spent</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sessions %}
+            <tr>
+              <td>{{ s.trainer.username }}</td>
+              <td>{{ s.start_time|date:"Y-m-d H:i" }}</td>
+              <td>{{ s.end_time|date:"Y-m-d H:i" }}</td>
+              <td>{{ s.hours_spent|floatformat:2 }}</td>
+              <td>{{ s.description|default:"-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="fw-bold">Total hours logged in this batch: {{ total_hours|floatformat:2 }} hours</p>
+  {% else %}
+    <p>No sessions logged yet for this batch.</p>
+  {% endif %}
+
+  <div class="mt-4">
+    {% if not user.is_superuser %}
+      <a href="{% url 'session_create' %}" class="btn-custom">➕ Log another Work Session</a>
+    {% endif %}
+    <a href="{% url 'batch_list' %}" class="btn-custom">⬅️ Back to batch list</a>
+  </div>
+</div>
+{% endblock %}
+>>>>>>> origin/main

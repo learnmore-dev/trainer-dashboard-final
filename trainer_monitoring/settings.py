@@ -19,11 +19,17 @@ CSRF_TRUSTED_ORIGINS = [
     'http://13.235.132.174:8000',
 ]
 
+<<<<<<< HEAD
 LOGIN_REDIRECT_URL = 'training:trainer_dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'training:trainer_dashboard'
 
+=======
+LOGIN_REDIRECT_URL = 'trainer_dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
+>>>>>>> origin/main
 #LOGIN_URL = 'login'
 #LOGOUT_REDIRECT_URL = 'login'
 CSRF_COOKIE_SECURE = False
