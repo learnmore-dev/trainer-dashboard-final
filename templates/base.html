@@ -7,6 +7,46 @@
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<<<<<<< HEAD
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary-color: #7209b7;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --gray-light: #e9ecef;
+      --gray-medium: #adb5bd;
+      --success-color: #4cc9f0;
+      --border-radius: 12px;
+      --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --box-shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      background-color: #fafbfe;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Modern navbar styling */
+    nav {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      padding: 1rem 2rem;
+      box-shadow: var(--box-shadow);
+=======
 
   <style>
     body {
@@ -20,10 +60,262 @@
       padding: 0.75rem 1.5rem;
       border-radius: 0 0 12px 12px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+>>>>>>> origin/main
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+<<<<<<< HEAD
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      font-weight: 500;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: white;
+      color: var(--primary-color);
+      border-radius: 50%;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a i {
+      font-size: 1.1rem;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: white;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    nav a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    nav a:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .logout-form {
+      display: inline;
+      margin: 0;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .container {
+      flex: 1;
+      padding: 2rem 1rem;
+      max-width: 1400px;
+    }
+
+    /* Demo content styling */
+    .demo-content {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 2.5rem;
+      margin-top: 2rem;
+      border-left: 5px solid var(--primary-color);
+    }
+
+    .demo-content h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .demo-content p {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      box-shadow: var(--box-shadow);
+      border-top: 4px solid var(--primary-color);
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+
+    .stat-card h4 {
+      font-size: 1rem;
+      color: var(--gray-medium);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .stat-card .value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card .trend {
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .trend.up {
+      color: #20c997;
+    }
+
+    .trend.down {
+      color: #ff6b6b;
+    }
+
+    /* Footer styling */
+    footer {
+      background: white;
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--gray-medium);
+      font-size: 0.9rem;
+      margin-top: auto;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    @media (max-width: 992px) {
+      nav {
+        padding: 1rem;
+      }
+      
+      .nav-links {
+        gap: 10px;
+      }
+      
+      nav a {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+      
+      .logout-btn {
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .user-info {
+        align-self: stretch;
+        justify-content: center;
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .demo-content {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .nav-links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+      
+      nav a, .logout-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+=======
     }
 
     nav a {
@@ -59,6 +351,7 @@
 
       nav a {
         margin: 5px 0 0 0;
+>>>>>>> origin/main
       }
     }
   </style>
@@ -67,6 +360,66 @@
 
   <nav>
     {% if user.is_authenticated %}
+<<<<<<< HEAD
+      <div class="user-info">
+        <span class="user-badge">{{ user.username|first|upper }}</span>
+        <div>
+          <strong>{{ user.username }}</strong>
+          <div style="font-size: 0.85rem; opacity: 0.9;">
+            {% if user.is_superuser %}Administrator{% else %}Trainer{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <!-- Dashboard Link -->
+        {% if user.is_superuser %}
+          <a href="{% url 'training:admin_dashboard' %}">
+            <i class="fas fa-tachometer-alt"></i>
+            Admin Dashboard
+          </a>
+          <a href="{% url 'training:admin_batch_list' %}">
+            <i class="fas fa-list"></i>
+            All Batches
+          </a>
+        {% else %}
+          <a href="{% url 'training:trainer_dashboard' %}">
+            <i class="fas fa-tachometer-alt"></i>
+            My Dashboard
+          </a>
+          <a href="{% url 'training:batch_list' %}">
+            <i class="fas fa-users"></i>
+            My Batches
+          </a>
+          <a href="{% url 'training:session_create_standalone' %}">
+  <i class="fas fa-plus-circle"></i>
+  Add Work Session
+</a>
+
+
+        {% endif %}
+
+        <!-- Attendance Link -->
+        <a href="{% url 'training:attendance' %}">
+          <i class="fas fa-clipboard-check"></i>
+          Attendance
+        </a>
+        
+        <!-- Logout Form -->
+        <form method="post" action="{% url 'training:django_logout' %}" class="logout-form">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </form>
+      </div>
+    {% else %}
+      <a href="{% url 'training:login' %}" style="color: white;">
+        <i class="fas fa-sign-in-alt"></i>
+        Login
+      </a>
+=======
       <span>Logged in as {{ user.username }} ({% if user.is_superuser %}Admin{% else %}Trainer{% endif %})</span>
       <div>
         <a href="{% url 'batch_list' %}">Batches</a>
@@ -80,14 +433,87 @@
       </div>
     {% else %}
       <a href="{% url 'login' %}">Login</a>
+>>>>>>> origin/main
     {% endif %}
   </nav>
 
   <div class="container mt-4">
+<<<<<<< HEAD
+    {% block content %}
+    <!-- Demo content to show the design -->
+    <div class="demo-content">
+      <h2>Welcome to Trainer Monitoring System</h2>
+      <p>This is a modern, responsive dashboard for managing training sessions, batches, and attendance tracking. The interface has been updated with a contemporary design featuring gradient navigation, smooth animations, and intuitive visual elements.</p>
+      <p>Use the navigation above to access different sections of the application based on your user role.</p>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Active Batches</h4>
+          <div class="value">12</div>
+          <div class="trend up"><i class="fas fa-arrow-up"></i> 2 from last month</div>
+        </div>
+        <div class="stat-card">
+          <h4>Training Sessions</h4>
+          <div class="value">48</div>
+          <div class="trend up"><i class="fas fa-arrow-up"></i> 5 this week</div>
+        </div>
+        <div class="stat-card">
+          <h4>Attendance Rate</h4>
+          <div class="value">94%</div>
+          <div class="trend down"><i class="fas fa-arrow-down"></i> 1% from last week</div>
+        </div>
+        <div class="stat-card">
+          <h4>Completed Courses</h4>
+          <div class="value">156</div>
+          <div class="trend up"><i class="fas fa-arrow-up"></i> 12 this month</div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+  
+  <footer>
+    <p>Trainer Monitoring System &copy; 2023 | Modern Dashboard Design</p>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Simple animation for stat cards on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const statCards = document.querySelectorAll('.stat-card');
+      statCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100 * index);
+      });
+      
+      // Add hover effect to navigation items
+      const navItems = document.querySelectorAll('nav a, .logout-btn');
+      navItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-3px)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+
+=======
     {% block content %}{% endblock %}
   </div>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+>>>>>>> origin/main
 </body>
 </html>

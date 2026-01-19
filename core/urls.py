@@ -6,6 +6,10 @@ urlpatterns = [
     path('', auth_views.LoginView.as_view(), name='login'),   # 👈 THIS FIXES ROOT "/"
     path('signup/', views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
+<<<<<<< HEAD
+    path("logout/", views.logout_user, name="logout"),
+=======
     path('logout/', views.logout_user, name='logout'),  # Using custom logout view
+>>>>>>> origin/main
 ]
 

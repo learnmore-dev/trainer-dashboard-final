@@ -4,8 +4,13 @@
 <style>
   .dashboard-container {
     max-width: 800px;
+<<<<<<< HEAD
+    margin: 0 auto 40px;
+    padding: 20px 25px;
+=======
     margin: 40px auto;
     padding: 25px;
+>>>>>>> origin/main
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.1);
@@ -52,6 +57,80 @@
     background-color: #0a58ca;
     color: #fff;
   }
+<<<<<<< HEAD
+  .leave-btn {
+    margin: 0 0 15px 0;
+    padding-top: 5px;
+  }
+  
+  .dashboard-header {
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0d6efd;
+  }
+  
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+</style>
+
+<div class="container-fluid">
+  <!-- Leave Button - Top Right -->
+  <div class="d-flex justify-content-between align-items-start mt-2">
+    <div></div> <!-- Empty div for spacing -->
+    <div class="leave-btn">
+      <a href="{% url 'training:leave_create' %}" class="btn btn-outline-danger btn-sm">
+        ➖ Apply Leave
+      </a>
+    </div>
+  </div>
+
+  <h4 class="dashboard-header">Trainer Dashboard</h4>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Batch</th>
+        <th>Students</th>
+        <th>Total Hours</th>
+        <th>Remaining Hours</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for b in batches %}
+      <tr>
+        <td>{{ b.name }}</td>
+
+        <!-- ✅ Students Count -->
+        <td>
+          <span class="badge bg-info text-dark">
+            👨‍🎓 {{ b.student_count }}
+          </span>
+        </td>
+
+        <td>{{ b.total_hours }} h</td>
+        <td>{{ b.remaining_hours }} h</td>
+
+        <td>
+          {% if b.delay_hours > 0 %}
+            <span class="badge bg-danger">
+              ⏱ Delay ({{ b.delay_hours }} h)
+            </span>
+          {% else %}
+            <span class="badge bg-success">
+              ✔ On Time
+            </span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+=======
 </style>
 
 <div class="dashboard-container">
@@ -81,6 +160,7 @@
     <a href="{% url 'session_create' %}" class="btn-log-session">➕ Log a Work Session</a>
     <a href="{% url 'attendance' %}" class="btn-log-session" style="background-color: #28a745;">📍 Mark Attendance</a>
   </div>
+>>>>>>> origin/main
 </div>
 
 {% endblock %}

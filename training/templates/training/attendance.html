@@ -2,6 +2,703 @@
 {% block content %}
 
 <style>
+<<<<<<< HEAD
+  :root {
+    --primary-color: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary-color: #7209b7;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --gray-light: #e9ecef;
+    --gray-medium: #adb5bd;
+    --success-color: #4cc9f0;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --box-shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+    --transition: all 0.3s ease;
+  }
+
+  .attendance-container {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-top: 1rem;
+    border-left: 5px solid var(--primary-color);
+  }
+
+  h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .attendance-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 160px;
+    justify-content: center;
+  }
+
+  .in-btn { 
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  }
+  
+  .out-btn { 
+    background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  }
+
+  .attendance-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .in-btn:hover { 
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+  }
+  
+  .out-btn:hover { 
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+  }
+
+  .attendance-table-container {
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 1.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    min-width: 800px;
+  }
+
+  th {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+  }
+
+  td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gray-light);
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: rgba(67, 97, 238, 0.03);
+  }
+
+  .badge {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 70px;
+  }
+
+  .badge-in { 
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+  }
+  
+  .badge-out { 
+    background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+  }
+
+  .attendance-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid var(--gray-light);
+    transition: var(--transition);
+  }
+
+  .attendance-photo:hover {
+    transform: scale(1.8);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    position: relative;
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray-medium);
+    font-style: italic;
+  }
+
+  .working-hours {
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .status-dot-in {
+    background-color: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+  }
+
+  .status-dot-out {
+    background-color: #dc3545;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+  }
+
+  /* Stats Summary */
+  .stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-top: 4px solid var(--primary-color);
+    text-align: center;
+  }
+
+  .stat-card h4 {
+    font-size: 0.9rem;
+    color: var(--gray-medium);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .stat-card .value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  /* Camera preview */
+  .camera-preview {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .camera-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    max-width: 500px;
+    width: 90%;
+  }
+
+  .camera-video {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .camera-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .attendance-container {
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+    }
+    
+    .actions {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .attendance-btn {
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    th, td {
+      padding: 0.8rem 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .attendance-photo {
+      width: 45px;
+      height: 45px;
+    }
+    
+    .badge {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .stats-summary {
+      grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+      padding: 1rem;
+    }
+    
+    .stat-card .value {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<div class="attendance-container">
+  <h2>📊 Trainer Attendance</h2>
+  
+  <!-- Stats Summary -->
+  <div class="stats-summary">
+    <div class="stat-card">
+      <h4>Today's Status</h4>
+      <div class="value" id="todayStatus">--</div>
+    </div>
+    <div class="stat-card">
+      <h4>This Month</h4>
+      <div class="value" id="monthCount">0 days</div>
+    </div>
+    <div class="stat-card">
+      <h4>Total Hours</h4>
+      <div class="value" id="totalHours">0 hrs</div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="attendance-btn in-btn" onclick="markAttendance('mark_in')">
+      <i class="fas fa-sign-in-alt"></i>
+      Mark In
+    </button>
+    <button class="attendance-btn out-btn" onclick="markAttendance('mark_out')">
+      <i class="fas fa-sign-out-alt"></i>
+      Mark Out
+    </button>
+  </div>
+
+  <!-- Camera Preview Modal -->
+  <div class="camera-preview" id="cameraPreview">
+    <div class="camera-content">
+      <h4 style="text-align: center; margin-bottom: 1rem;">Take Attendance Photo</h4>
+      <video id="cameraVideo" autoplay class="camera-video"></video>
+      <div class="camera-actions">
+        <button class="attendance-btn in-btn" id="captureBtn">
+          <i class="fas fa-camera"></i>
+          Capture
+        </button>
+        <button class="attendance-btn out-btn" onclick="closeCamera()">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="photo" accept="image/*" capture="environment" hidden>
+  <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
+  <div class="attendance-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Mark In</th>
+          <th>Mark Out</th>
+          <th>Working Hours</th>
+          <th>Photo</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceTable">
+        <tr id="noData">
+          <td colspan="6" class="no-data">No attendance records yet</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  loadAttendance();
+  updateStats();
+});
+
+let selectedAction = null;
+let stream = null;
+
+// ------------------ LOAD ATTENDANCE HISTORY ------------------
+function loadAttendance() {
+  fetch("/training/trainer-attendance/history/")
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then(res => {
+      const table = document.getElementById("attendanceTable");
+      
+      if (!res.data || res.data.length === 0) {
+        table.innerHTML = `<tr><td colspan="6" class="no-data">No attendance records yet</td></tr>`;
+        return;
+      }
+
+      let tableHTML = '';
+      res.data.forEach(row => {
+        const statusClass = row.status === "IN" ? "badge-in" : "badge-out";
+        const dotClass = row.status === "IN" ? "status-dot-in" : "status-dot-out";
+        
+        tableHTML += `
+          <tr>
+            <td><strong>${row.date || '--'}</strong></td>
+            <td>
+              <div class="status-indicator">
+                <span class="status-dot ${dotClass}"></span>
+                <span class="badge ${statusClass}">${row.status || '--'}</span>
+              </div>
+            </td>
+            <td>${row.mark_in || '--'}</td>
+            <td>${row.mark_out || '--'}</td>
+            <td class="working-hours">${row.working_hours || '--'}</td>
+            <td>
+              ${row.photo_in ? 
+                `<img src="${row.photo_in}" class="attendance-photo" title="Attendance Photo">` : 
+                '--'
+              }
+            </td>
+          </tr>
+        `;
+      });
+      
+      table.innerHTML = tableHTML;
+      
+      // Add click events to images for better preview
+      document.querySelectorAll('.attendance-photo').forEach(img => {
+        img.addEventListener('click', function() {
+          openImagePreview(this.src);
+        });
+      });
+    })
+    .catch(error => {
+      console.error('Error loading attendance:', error);
+      document.getElementById("attendanceTable").innerHTML = 
+        `<tr><td colspan="6" class="no-data">Error loading attendance data</td></tr>`;
+    });
+}
+
+// ------------------ UPDATE STATS ------------------
+function updateStats() {
+  // In a real app, you would fetch this from an API
+  // For now, we'll simulate with dummy data
+  document.getElementById('todayStatus').textContent = 'Not Checked In';
+  document.getElementById('monthCount').textContent = '12 days';
+  document.getElementById('totalHours').textContent = '48 hrs';
+}
+
+// ------------------ MARK ATTENDANCE ------------------
+function markAttendance(action) {
+  selectedAction = action;
+  const actionName = action === 'mark_in' ? 'IN' : 'OUT';
+  
+  if (confirm(`Are you sure you want to mark ${actionName}?`)) {
+    // Option 1: Use camera directly (modern approach)
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      openCamera();
+    } else {
+      // Fallback to file input
+      document.getElementById('photo').click();
+    }
+  }
+}
+
+// ------------------ OPEN CAMERA ------------------
+function openCamera() {
+  const cameraPreview = document.getElementById('cameraPreview');
+  const video = document.getElementById('cameraVideo');
+  
+  cameraPreview.style.display = 'flex';
+  
+  navigator.mediaDevices.getUserMedia({ 
+    video: { 
+      facingMode: 'environment',
+      width: { ideal: 1280 },
+      height: { ideal: 720 }
+    } 
+  })
+  .then(function(mediaStream) {
+    stream = mediaStream;
+    video.srcObject = stream;
+    video.play();
+    
+    // Setup capture button
+    document.getElementById('captureBtn').onclick = function() {
+      capturePhoto();
+    };
+  })
+  .catch(function(err) {
+    console.error("Camera error: ", err);
+    alert("Unable to access camera. Please use file upload instead.");
+    cameraPreview.style.display = 'none';
+    document.getElementById('photo').click();
+  });
+}
+
+// ------------------ CAPTURE PHOTO ------------------
+function capturePhoto() {
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  
+  canvas.toBlob(function(blob) {
+    processAttendance(blob);
+    closeCamera();
+  }, 'image/jpeg', 0.8);
+}
+
+// ------------------ CLOSE CAMERA ------------------
+function closeCamera() {
+  const cameraPreview = document.getElementById('cameraPreview');
+  cameraPreview.style.display = 'none';
+  
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+}
+
+// ------------------ PROCESS ATTENDANCE ------------------
+function processAttendance(photoBlob) {
+  // Get location first
+  navigator.geolocation.getCurrentPosition(
+    function (pos) {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const accuracy = pos.coords.accuracy;
+      
+      if (accuracy > 100) {
+        alert(`Location accuracy is low (${Math.round(accuracy)}m). Please ensure you're at the correct location.`);
+      }
+      
+      const formData = new FormData();
+      formData.append("attendance", selectedAction);
+      
+      if (photoBlob) {
+        const photoFile = new File([photoBlob], `attendance_${Date.now()}.jpg`, { type: 'image/jpeg' });
+        formData.append("photo", photoFile);
+      }
+      
+      formData.append("latitude", lat);
+      formData.append("longitude", lng);
+      formData.append("accuracy", accuracy);
+      
+      // Show loading state
+      const originalText = selectedAction === 'mark_in' ? 'Mark In' : 'Mark Out';
+      const buttons = document.querySelectorAll('.attendance-btn');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+      });
+      
+      fetch("/training/trainer-attendance/api/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": document.getElementById("csrf_token").value
+        },
+        body: formData
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
+        if (data.error) {
+          alert("Error: " + data.error);
+        } else {
+          // Show success message
+          const actionName = selectedAction === 'mark_in' ? 'IN' : 'OUT';
+          showNotification(`Successfully marked ${actionName} at ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`, 'success');
+          
+          // Reload data
+          loadAttendance();
+          updateStats();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert("Failed to mark attendance. Please try again.");
+      })
+      .finally(() => {
+        // Reset buttons
+        buttons.forEach(btn => {
+          btn.disabled = false;
+          btn.innerHTML = selectedAction === 'mark_in' ? 
+            `<i class="fas fa-sign-in-alt"></i> Mark In` : 
+            `<i class="fas fa-sign-out-alt"></i> Mark Out`;
+        });
+      });
+      
+    },
+    function (error) {
+      alert("Location permission denied. Attendance marking requires location access.");
+      console.error("Geolocation error:", error);
+    },
+    { 
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
+// ------------------ FILE INPUT CHANGE (Fallback) ------------------
+document.getElementById("photo").addEventListener("change", function () {
+  if (!selectedAction || !this.files[0]) return;
+  
+  const photo = this.files[0];
+  processAttendance(photo);
+});
+
+// ------------------ IMAGE PREVIEW ------------------
+function openImagePreview(src) {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    cursor: pointer;
+  `;
+  
+  const img = document.createElement('img');
+  img.src = src;
+  img.style.cssText = `
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  `;
+  
+  modal.appendChild(img);
+  modal.addEventListener('click', () => document.body.removeChild(modal));
+  document.body.appendChild(modal);
+}
+
+// ------------------ NOTIFICATION ------------------
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    background: ${type === 'success' ? '#28a745' : '#dc3545'};
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+  `;
+  
+  notification.innerHTML = `
+    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+    ${message}
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// Add animation styles
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+</script>
+
+=======
     * { box-sizing: border-box; margin: 0; padding: 0; }
     .attendance-container {
         background: white;
@@ -335,4 +1032,5 @@ function getCookie(name) {
     return cookieValue;
 }
 </script>
+>>>>>>> origin/main
 {% endblock %}

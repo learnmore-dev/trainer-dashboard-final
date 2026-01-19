@@ -2,10 +2,33 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
+<<<<<<< HEAD
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+from .models import Batch, WorkSession, Attendance, TrainerAttendance
+import json
+from datetime import datetime, timedelta
+
+
+
+
+
+
+# training/views.py
+
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+
+
+
+    
+=======
 from .models import Batch, WorkSession, Attendance
 import json
 from datetime import datetime, timedelta
 
+>>>>>>> origin/main
 # ✅ TIMEZONE FUNCTIONS
 def get_indian_time():
     """Get current time in Indian timezone"""
@@ -232,6 +255,38 @@ def logout_view(request):
 @login_required
 def trainer_dashboard(request):
     trainer = request.user
+<<<<<<< HEAD
+
+    batches = Batch.objects.all() if request.user.is_superuser else Batch.objects.filter(trainer=trainer)
+
+    recent_sessions = WorkSession.objects.filter(
+        trainer=trainer
+    ).order_by('-session_date')[:10]
+
+    # ✅ Total worked hours
+    total_worked_hours = sum(
+        s.hours_taken for s in WorkSession.objects.filter(trainer=trainer)
+    )
+
+    # ✅ Weekly hours (date based)
+    today = timezone.now().date()
+    start_of_week = today - timedelta(days=today.weekday())
+
+    weekly_sessions = WorkSession.objects.filter(
+        trainer=trainer,
+        session_date__gte=start_of_week
+    )
+
+    weekly_hours = sum(s.hours_taken for s in weekly_sessions)
+
+    attendance_status = check_today_login(trainer)
+
+    context = {
+        'batches': batches,
+        'sessions': recent_sessions,
+        'total_hours': total_worked_hours,
+        'hours_week': weekly_hours,
+=======
     
     if request.user.is_superuser:
         batches = Batch.objects.all()
@@ -264,10 +319,40 @@ def trainer_dashboard(request):
         'sessions': sessions,
         'total_hours': round(total_hours, 2),
         'hours_week': round(hours_week, 2),
+>>>>>>> origin/main
         'attendance_status': attendance_status,
     }
     return render(request, 'training/trainer_dashboard.html', context)
 
+<<<<<<< HEAD
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib.auth import get_user_model
+
+@login_required
+def admin_dashboard(request):
+    # ❌ Trainer ko yahan aane hi mat do
+    if not request.user.is_superuser:
+        return redirect('trainer_dashboard')
+
+    User = get_user_model()
+
+    # ✅ All batches (admin only)
+    batches = Batch.objects.select_related('trainer').all()
+
+    # ✅ Trainers = jo Batch me assigned hain
+    trainers = User.objects.filter(
+        batches__isnull=False
+    ).distinct()
+
+    # 🔍 Trainer filter
+    trainer_filter = request.GET.get('trainer')
+    if trainer_filter and trainer_filter != 'all':
+        batches = batches.filter(trainer_id=trainer_filter)
+
+    total_sessions = WorkSession.objects.count()
+
+=======
 @login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
@@ -280,25 +365,382 @@ def admin_dashboard(request):
     trainers = User.objects.filter(is_staff=True)
     total_sessions = WorkSession.objects.count()
     
+>>>>>>> origin/main
     context = {
         'batches': batches,
         'trainers': trainers,
         'total_sessions': total_sessions,
+<<<<<<< HEAD
+        'selected_trainer': trainer_filter,
+=======
+>>>>>>> origin/main
     }
     return render(request, 'training/admin_dashboard.html', context)
 
 @login_required
 def batch_list(request):
+<<<<<<< HEAD
+    batches = Batch.objects.all() if request.user.is_superuser else Batch.objects.filter(trainer=request.user)
+=======
     if request.user.is_superuser:
         batches = Batch.objects.all()
     else:
         batches = Batch.objects.filter(trainer=request.user)
     
+>>>>>>> origin/main
     return render(request, 'training/batch_list.html', {'batches': batches})
 
 @login_required
 def batch_detail(request, batch_id):
     batch = get_object_or_404(Batch, id=batch_id)
+<<<<<<< HEAD
+
+    if not request.user.is_superuser and batch.trainer != request.user:
+        return redirect('batch_list')
+
+    sessions = batch.sessions.all().order_by('-session_date')
+
+    used_hours = sum(session.hours_taken for session in sessions)
+    remaining_hours = batch.total_hours - used_hours
+
+    context = {
+        'batch': batch,
+        'sessions': sessions,
+        'used_hours': round(used_hours, 2),
+        'remaining_hours': round(remaining_hours, 2),
+        'delay_hours': abs(remaining_hours) if remaining_hours < 0 else 0,
+    }
+    return render(request, 'training/batch_detail.html', context)
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from .models import Batch, WorkSession
+
+
+@login_required
+def session_create(request, batch_id=None):
+    # Get trainer's batches
+    if request.user.is_superuser:
+        batches = Batch.objects.all()
+    else:
+        batches = Batch.objects.filter(trainer=request.user)
+    
+    # If batch_id provided in URL, pre-select that batch
+    selected_batch = None
+    if batch_id:
+        selected_batch = get_object_or_404(Batch, id=batch_id)
+        
+        # Permission check
+        if not request.user.is_superuser and selected_batch.trainer != request.user:
+            return render(request, 'training/session_form.html', {  # 👈 Yahan change kiya
+                'error': 'Permission denied',
+                'batches': batches
+            })
+
+    if request.method == 'POST':
+        batch_id = request.POST.get('batch')
+        session_date = request.POST.get('session_date')
+        hours_taken = request.POST.get('hours_taken')
+        description = request.POST.get('description', '')
+
+        try:
+            batch = get_object_or_404(Batch, id=batch_id)
+            
+            # Permission check
+            if not request.user.is_superuser and batch.trainer != request.user:
+                return render(request, 'training/session_form.html', {  # 👈 Yahan change kiya
+                    'error': 'Permission denied',
+                    'batches': batches,
+                    'selected_batch': selected_batch
+                })
+
+            # Convert data
+            session_date = datetime.strptime(session_date, '%Y-%m-%d').date()
+            hours_taken = float(hours_taken)
+
+            # Save session
+            WorkSession.objects.create(
+                trainer=request.user,
+                batch=batch,
+                session_date=session_date,
+                hours_taken=hours_taken,
+                description=description
+            )
+
+            # Redirect to batch detail
+            return redirect('training:batch_detail', batch_id=batch.id)
+
+        except Exception as e:
+            return render(request, 'training/session_form.html', {  # 👈 Yahan change kiya
+                'error': str(e),
+                'batches': batches,
+                'selected_batch': selected_batch
+            })
+
+    # GET request
+    return render(request, 'training/session_form.html', {  # 👈 Yahan change kiya
+        'batches': batches,
+        'selected_batch': selected_batch
+    })    # GET request
+    
+
+# ==================== TRAINER ATTENDANCE VIEWS ====================
+
+@login_required
+def trainer_attendance_page(request):
+    return render(request, "training/attendance_page.html")
+
+@login_required
+def trainer_attendance(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=405)
+
+    action = request.POST.get("attendance")
+    photo = request.FILES.get("photo")
+    lat = request.POST.get("latitude")
+    lng = request.POST.get("longitude")
+    accuracy = request.POST.get("accuracy")
+
+    if accuracy and float(accuracy) > 500:
+        return JsonResponse(
+        {"error": "Fake GPS detected"},
+        status=403
+    )
+
+    if not action or not lat or not lng:
+        return JsonResponse({"error": "Missing data"}, status=400)
+
+    user = request.user
+    today = timezone.localdate()
+
+    attendance, created = TrainerAttendance.objects.get_or_create(
+        trainer=user,
+        date=today
+    )
+
+    # ---------- MARK IN ----------
+    if action == "mark_in":
+
+        if attendance.mark_in_time:
+            return JsonResponse(
+                {"error": "Already marked in today"},
+                status=400
+            )
+
+        attendance.mark_in_time = timezone.now()
+        attendance.photo_in = photo
+        attendance.latitude = lat
+        attendance.longitude = lng
+        attendance.save()
+
+        return JsonResponse({
+            "status": "Marked In",
+            "time": timezone.localtime(
+                attendance.mark_in_time
+            ).strftime("%H:%M:%S")
+        })
+
+    # ---------- MARK OUT ----------
+    if action == "mark_out":
+
+        if not attendance.mark_in_time:
+            return JsonResponse(
+                {"error": "Mark in first"},
+                status=400
+            )
+
+        if attendance.mark_out_time:
+            return JsonResponse(
+                {"error": "Already marked out"},
+                status=400
+            )
+
+        attendance.mark_out_time = timezone.now()
+        attendance.photo_out = photo
+
+        duration = attendance.mark_out_time - attendance.mark_in_time
+        attendance.working_duration = duration
+        attendance.save()
+
+        hours = int(duration.total_seconds() // 3600)
+        minutes = int((duration.total_seconds() % 3600) // 60)
+
+        return JsonResponse({
+            "status": "Marked Out",
+            "time": timezone.localtime(
+                attendance.mark_out_time
+            ).strftime("%H:%M:%S"),
+            "working_hours": f"{hours}h {minutes}m"
+        })
+
+    return JsonResponse({"error": "Invalid action"}, status=400)
+
+@login_required
+def attendance_history(request):
+    records = TrainerAttendance.objects.filter(
+        trainer=request.user
+    ).order_by("-date")
+
+    data = []
+
+    for r in records:
+        data.append({
+            "date": r.date.strftime("%d-%m-%Y"),
+            "mark_in": (
+                timezone.localtime(r.mark_in_time).strftime("%H:%M:%S")
+                if r.mark_in_time else "--"
+            ),
+            "mark_out": (
+                timezone.localtime(r.mark_out_time).strftime("%H:%M:%S")
+                if r.mark_out_time else "--"
+            ),
+            "working_hours": (
+                f"{int(r.working_duration.total_seconds()//3600)}h "
+                f"{int((r.working_duration.total_seconds()%3600)//60)}m"
+                if r.working_duration else "--"
+            ),
+            "status": "OUT" if r.mark_out_time else "IN",
+            "photo_in": r.photo_in.url if r.photo_in else ""
+        })
+
+    return JsonResponse({"data": data})
+
+@login_required
+def monthly_attendance_report(request):
+    if not request.user.is_superuser:
+        return redirect('training:trainer_dashboard')
+    
+    now = timezone.now()
+    month = int(request.GET.get("month", now.month))
+    year = int(request.GET.get("year", now.year))
+    trainer_id = request.GET.get("trainer", None)
+
+    User = get_user_model()
+    all_users = User.objects.filter(is_active=True)
+
+    qs = TrainerAttendance.objects.filter(
+        date__month=month,
+        date__year=year
+    ).select_related("trainer")
+
+    if trainer_id:
+        qs = qs.filter(trainer_id=trainer_id)
+
+    report = {}
+
+    for r in qs:
+        user = r.trainer
+        report.setdefault(user.id, {
+            "name": user.get_full_name() or user.username,
+            "records": []
+        })
+
+        # ✅ YE ADD KARO - Duration calculate karo
+        duration = "--"
+        if r.mark_in_time and r.mark_out_time:
+            time_diff = r.mark_out_time - r.mark_in_time
+            hours = int(time_diff.total_seconds() // 3600)
+            minutes = int((time_diff.total_seconds() % 3600) // 60)
+            duration = f"{hours}h {minutes}m"
+        
+        # ✅ Dictionary format me data pass karo
+        report[user.id]["records"].append({
+            'date': r.date,
+            'status': 'OUT' if r.mark_out_time else 'IN',
+            'mark_in_time': (
+                timezone.localtime(r.mark_in_time).strftime("%I:%M %p")
+                if r.mark_in_time else "--"
+            ),
+            'mark_out_time': (
+                timezone.localtime(r.mark_out_time).strftime("%I:%M %p")
+                if r.mark_out_time else "--"
+            ),
+            'duration': duration,  # ✅ YE IMPORTANT HAI
+            'location_name': r.location_name or "--"
+        })
+
+    # ✅ Years list for dropdown
+    current_year = now.year
+    years = list(range(current_year - 2, current_year + 1))
+
+    return render(request, "training/admin_monthly_report.html", {
+        "report": report.values(),
+        "month": month,
+        "year": year,
+        "trainers": all_users,
+        "selected_trainer": trainer_id,  # ✅ Template me use hoga
+        "years": years  # ✅ Template me years dropdown ke liye
+    })
+
+# views.py
+from django.contrib.admin.views.decorators import staff_member_required
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
+
+@staff_member_required
+def admin_batch_list(request):
+    # Base queryset
+    batches = Batch.objects.select_related('trainer')
+    
+    # Get filter parameters
+    course_query = request.GET.get('course', '').strip()
+    trainer_query = request.GET.get('trainer', '').strip()
+    status_filter = request.GET.get('status', '').strip()
+    
+    # Apply course name filter
+    if course_query:
+        batches = batches.filter(name__icontains=course_query)
+    
+    # Apply trainer name filter (username OR full name)
+    if trainer_query:
+        batches = batches.filter(
+            Q(trainer__username__icontains=trainer_query) |
+            Q(trainer__first_name__icontains=trainer_query) |
+            Q(trainer__last_name__icontains=trainer_query)
+        )
+    
+    # Apply status filter
+    if status_filter == 'ontime':
+        # Filter batches where delay_hours <= 0
+        batches = [b for b in batches if b.delay_hours == 0]
+    elif status_filter == 'delay':
+        # Filter batches where delay_hours > 0
+        batches = [b for b in batches if b.delay_hours > 0]
+    
+    return render(request, 'training/admin_batch_list.html', {
+        'batches': batches
+    })
+
+
+# views.py
+from django.contrib.auth.decorators import login_required
+
+
+
+@login_required
+def trainer_batch_list(request):
+    trainer = request.user
+
+    # ❗ trainer sirf apne batches dekhe
+    batches = Batch.objects.filter(trainer=trainer)
+
+    context = {
+        'batches': batches
+    }
+
+    return render(request, 'training/batch_list.html', context)
+
+
+
+
+    # Add this to your views.py
+
+@login_required
+def get_trainer_batches(request):
+    """API endpoint to get trainer's batches"""
+=======
     
     if not request.user.is_superuser and batch.trainer != request.user:
         return redirect('batch_list')
@@ -353,9 +795,31 @@ def session_create(request):
                 'batches': Batch.objects.filter(trainer=request.user) if not request.user.is_superuser else Batch.objects.all()
             })
     
+>>>>>>> origin/main
     if request.user.is_superuser:
         batches = Batch.objects.all()
     else:
         batches = Batch.objects.filter(trainer=request.user)
     
+<<<<<<< HEAD
+    batch_list = [
+        {
+            'id': batch.id,
+            'name': batch.name
+        }
+        for batch in batches
+    ]
+    
+    return JsonResponse({'batches': batch_list})
+
+
+
+def leave_create(request):
+    return render(request, 'training/leave_create.html')
+
+
+def session_form(request, batch_id=None):
+    return session_create(request, batch_id)
+=======
     return render(request, 'training/session_form.html', {'batches': batches})
+>>>>>>> origin/main
