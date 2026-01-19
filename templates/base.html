@@ -7,7 +7,6 @@
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<<<<<<< HEAD
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -46,7 +45,6 @@
       background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
       padding: 1rem 2rem;
       box-shadow: var(--box-shadow);
-=======
 
   <style>
     body {
@@ -60,12 +58,10 @@
       padding: 0.75rem 1.5rem;
       border-radius: 0 0 12px 12px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
->>>>>>> origin/main
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-<<<<<<< HEAD
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -315,7 +311,6 @@
       
       .stats-grid {
         grid-template-columns: 1fr;
-=======
     }
 
     nav a {
@@ -351,7 +346,6 @@
 
       nav a {
         margin: 5px 0 0 0;
->>>>>>> origin/main
       }
     }
   </style>
@@ -360,7 +354,6 @@
 
   <nav>
     {% if user.is_authenticated %}
-<<<<<<< HEAD
       <div class="user-info">
         <span class="user-badge">{{ user.username|first|upper }}</span>
         <div>
@@ -419,7 +412,6 @@
         <i class="fas fa-sign-in-alt"></i>
         Login
       </a>
-=======
       <span>Logged in as {{ user.username }} ({% if user.is_superuser %}Admin{% else %}Trainer{% endif %})</span>
       <div>
         <a href="{% url 'batch_list' %}">Batches</a>
@@ -433,12 +425,10 @@
       </div>
     {% else %}
       <a href="{% url 'login' %}">Login</a>
->>>>>>> origin/main
     {% endif %}
   </nav>
 
   <div class="container mt-4">
-<<<<<<< HEAD
     {% block content %}
     <!-- Demo content to show the design -->
     <div class="demo-content">
@@ -508,12 +498,10 @@
     });
   </script>
 
-=======
     {% block content %}{% endblock %}
   </div>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
->>>>>>> origin/main
 </body>
 </html>

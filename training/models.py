@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 # =========================
 # Batch Model
 # =========================
@@ -49,7 +49,7 @@ class WorkSession(models.Model):
         on_delete=models.CASCADE
     )
 
-=======
+#=======
 
 class Attendance(models.Model):
     user = models.ForeignKey(
@@ -128,13 +128,13 @@ class WorkSession(models.Model):
         on_delete=models.CASCADE,
         related_name='work_sessions'
     )
->>>>>>> origin/main
+#>>>>>>> origin/main
     batch = models.ForeignKey(
         Batch,
         on_delete=models.CASCADE,
         related_name='sessions'
     )
-<<<<<<< HEAD
+#<<<<<<< HEAD
 
     session_date = models.DateField(default=timezone.now)
     hours_taken = models.PositiveIntegerField()
@@ -210,7 +210,7 @@ class TrainerAttendance(models.Model):
     
     def __str__(self):
         return f"{self.trainer.username} - {self.date}"
-=======
+#=======
     start_time = models.DateTimeField(blank=True, null=True)
     end_time   = models.DateTimeField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -228,4 +228,4 @@ class TrainerAttendance(models.Model):
             return 0
         delta = self.end_time - self.start_time
         return round(delta.total_seconds() / 3600, 2)
->>>>>>> origin/main
+#>>>>>>> origin/main

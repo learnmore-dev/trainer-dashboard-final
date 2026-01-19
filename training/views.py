@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
-<<<<<<< HEAD
+#<<<<<<< HEAD
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .models import Batch, WorkSession, Attendance, TrainerAttendance
@@ -23,12 +23,12 @@ from django.shortcuts import redirect
 
 
     
-=======
+#=======
 from .models import Batch, WorkSession, Attendance
 import json
 from datetime import datetime, timedelta
 
->>>>>>> origin/main
+#>>>>>>> origin/main
 # ✅ TIMEZONE FUNCTIONS
 def get_indian_time():
     """Get current time in Indian timezone"""
@@ -255,7 +255,7 @@ def logout_view(request):
 @login_required
 def trainer_dashboard(request):
     trainer = request.user
-<<<<<<< HEAD
+#<<<<<<< HEAD
 
     batches = Batch.objects.all() if request.user.is_superuser else Batch.objects.filter(trainer=trainer)
 
@@ -286,7 +286,7 @@ def trainer_dashboard(request):
         'sessions': recent_sessions,
         'total_hours': total_worked_hours,
         'hours_week': weekly_hours,
-=======
+#=======
     
     if request.user.is_superuser:
         batches = Batch.objects.all()
@@ -319,12 +319,12 @@ def trainer_dashboard(request):
         'sessions': sessions,
         'total_hours': round(total_hours, 2),
         'hours_week': round(hours_week, 2),
->>>>>>> origin/main
+#>>>>>>> origin/main
         'attendance_status': attendance_status,
     }
     return render(request, 'training/trainer_dashboard.html', context)
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
@@ -352,7 +352,7 @@ def admin_dashboard(request):
 
     total_sessions = WorkSession.objects.count()
 
-=======
+#=======
 @login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
@@ -365,35 +365,35 @@ def admin_dashboard(request):
     trainers = User.objects.filter(is_staff=True)
     total_sessions = WorkSession.objects.count()
     
->>>>>>> origin/main
+#>>>>>>> origin/main
     context = {
         'batches': batches,
         'trainers': trainers,
         'total_sessions': total_sessions,
-<<<<<<< HEAD
+#<<<<<<< HEAD
         'selected_trainer': trainer_filter,
-=======
->>>>>>> origin/main
+#=======
+#>>>>>>> origin/main
     }
     return render(request, 'training/admin_dashboard.html', context)
 
 @login_required
 def batch_list(request):
-<<<<<<< HEAD
+#<<<<<<< HEAD
     batches = Batch.objects.all() if request.user.is_superuser else Batch.objects.filter(trainer=request.user)
-=======
+#=======
     if request.user.is_superuser:
         batches = Batch.objects.all()
     else:
         batches = Batch.objects.filter(trainer=request.user)
     
->>>>>>> origin/main
+#>>>>>>> origin/main
     return render(request, 'training/batch_list.html', {'batches': batches})
 
 @login_required
 def batch_detail(request, batch_id):
     batch = get_object_or_404(Batch, id=batch_id)
-<<<<<<< HEAD
+#<<<<<<< HEAD
 
     if not request.user.is_superuser and batch.trainer != request.user:
         return redirect('batch_list')
@@ -740,7 +740,7 @@ def trainer_batch_list(request):
 @login_required
 def get_trainer_batches(request):
     """API endpoint to get trainer's batches"""
-=======
+#=======
     
     if not request.user.is_superuser and batch.trainer != request.user:
         return redirect('batch_list')
@@ -795,13 +795,13 @@ def session_create(request):
                 'batches': Batch.objects.filter(trainer=request.user) if not request.user.is_superuser else Batch.objects.all()
             })
     
->>>>>>> origin/main
+#>>>>>>> origin/main
     if request.user.is_superuser:
         batches = Batch.objects.all()
     else:
         batches = Batch.objects.filter(trainer=request.user)
     
-<<<<<<< HEAD
+#<<<<<<< HEAD
     batch_list = [
         {
             'id': batch.id,
@@ -820,6 +820,6 @@ def leave_create(request):
 
 def session_form(request, batch_id=None):
     return session_create(request, batch_id)
-=======
+#=======
     return render(request, 'training/session_form.html', {'batches': batches})
->>>>>>> origin/main
+#>>>>>>> origin/main

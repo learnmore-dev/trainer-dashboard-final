@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+#<<<<<<< HEAD
 # trainer_monitoring/urls.py
 
 from django.contrib import admin
@@ -14,7 +14,7 @@ urlpatterns = [
 
     # ... other URLs
 ]
-=======
+#=======
 """
 URL configuration for trainer_monitoring project.
 
@@ -49,4 +49,4 @@ urlpatterns = [
 ]
 
 
->>>>>>> origin/main
+#>>>>>>> origin/main
