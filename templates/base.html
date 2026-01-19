@@ -45,19 +45,6 @@
       background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
       padding: 1rem 2rem;
       box-shadow: var(--box-shadow);
-
-  <style>
-    body {
-      background-color: #f4f6f9;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* Navbar styling */
-    nav {
-      background-color: #0d6efd;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0 0 12px 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -311,41 +298,6 @@
       
       .stats-grid {
         grid-template-columns: 1fr;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 15px;
-      font-weight: 500;
-      transition: color 0.3s, transform 0.2s;
-    }
-
-    nav a:hover {
-      color: #ffe;
-      transform: translateY(-2px);
-    }
-
-    nav span {
-      color: #fff;
-      font-weight: 500;
-    }
-
-    hr {
-      margin: 0;
-      border: none;
-      border-top: 2px solid #0d6efd;
-      margin-bottom: 20px;
-    }
-
-    @media (max-width: 576px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav a {
-        margin: 5px 0 0 0;
       }
     }
   </style>
@@ -412,19 +364,6 @@
         <i class="fas fa-sign-in-alt"></i>
         Login
       </a>
-      <span>Logged in as {{ user.username }} ({% if user.is_superuser %}Admin{% else %}Trainer{% endif %})</span>
-      <div>
-        <a href="{% url 'batch_list' %}">Batches</a>
-        {% if not user.is_superuser %}
-          <a href="{% url 'trainer_dashboard' %}">My Dashboard</a>
-        {% else %}
-          <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
-        {% endif %}
-        <a href="{% url 'attendance' %}">Attendance</a>
-        <a href="{% url 'logout' %}">Logout</a>
-      </div>
-    {% else %}
-      <a href="{% url 'login' %}">Login</a>
     {% endif %}
   </nav>
 
@@ -498,10 +437,5 @@
     });
   </script>
 
-    {% block content %}{% endblock %}
-  </div>
-
-  <!-- Bootstrap 5 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

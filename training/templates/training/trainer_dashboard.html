@@ -6,8 +6,6 @@
     max-width: 800px;
     margin: 0 auto 40px;
     padding: 20px 25px;
-    margin: 40px auto;
-    padding: 25px;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.1);
@@ -126,35 +124,6 @@
       {% endfor %}
     </tbody>
   </table>
-</style>
-
-<div class="dashboard-container">
-  <h2>Trainer Dashboard</h2>
-
-  <div class="stats">
-    <p><strong>Total Hours Worked:</strong> {{ total_hours|default:"0.00"|floatformat:2 }} hours</p>
-    <p><strong>Hours this week:</strong> {{ hours_week|default:"0.00"|floatformat:2 }} hours</p>
-  </div>
-
-  <h3>Your Batches</h3>
-  <ul class="list-group batch-list">
-    {% for b in batches %}
-      <li class="list-group-item">
-        <div>
-          <strong>{{ b.name }}</strong><br>
-          <small>{{ b.start_datetime|date:"d M Y" }} to {{ b.end_datetime|date:"d M Y" }}</small>
-        </div>
-        <span class="badge bg-secondary">{{ b.days_remaining }} days remaining</span>
-      </li>
-    {% empty %}
-      <li class="list-group-item">No batches available</li>
-    {% endfor %}
-  </ul>
-
-  <div class="mt-4">
-    <a href="{% url 'session_create' %}" class="btn-log-session">➕ Log a Work Session</a>
-    <a href="{% url 'attendance' %}" class="btn-log-session" style="background-color: #28a745;">📍 Mark Attendance</a>
-  </div>
 </div>
 
 {% endblock %}
