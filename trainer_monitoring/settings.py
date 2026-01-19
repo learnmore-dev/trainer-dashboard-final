@@ -13,37 +13,29 @@ AUTH_USER_MODEL = "core.User"
 
 SECRET_KEY = 'django-insecure-c)7)qrau47xf1u-$$s-spnus=cx=2$z8^lt7b5z^*d@s7bg&^4'
 DEBUG = True
-ALLOWED_HOSTS = ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'http://13.235.132.174:8000',
 ]
 
-#<<<<<<< HEAD
+# ---------------------------
+# Authentication settings
+# ---------------------------
 LOGIN_REDIRECT_URL = 'training:trainer_dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'training:trainer_dashboard'
 
-#=======
-LOGIN_REDIRECT_URL = 'trainer_dashboard'
-LOGOUT_REDIRECT_URL = 'login'
-LOGIN_URL = 'login'
-#>>>>>>> origin/main
-#LOGIN_URL = 'login'
-#LOGOUT_REDIRECT_URL = 'login'
+# Security settings for development
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+
 # ---------------------------
 # Static files
 # ---------------------------
 STATIC_URL = '/static/'
-
-# Folder where collectstatic will gather all static files (for production)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Additional static folders for development
 STATICFILES_DIRS = [
-    BASE_DIR / "core" / "static",  # make sure this folder exists
+    BASE_DIR / "core" / "static",
 ]
 
 # ---------------------------
@@ -53,24 +45,14 @@ JAZZMIN_SETTINGS = {
     "site_title": "Trainer Monitoring",
     "site_header": "Trainer Monitoring Admin",
     "site_brand": "Trainer Admin",
-
     "welcome_sign": "Welcome Admin",
-
-    # 🔥 FORCE readable theme
     "theme": "flatly",
     "dark_mode_theme": None,
-
     "show_sidebar": True,
     "navigation_expanded": True,
-
-    # Disable theme switch
     "show_ui_builder": False,
+    "custom_css": "core/admin_fix.css",
 }
-
-JAZZMIN_SETTINGS["custom_css"] = "core/admin_fix.css"
-
-
-
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -99,7 +81,7 @@ ROOT_URLCONF = 'trainer_monitoring.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'templates' ],
+        'DIRS': [ str(BASE_DIR / 'templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,8 +104,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
         'OPTIONS': {
-      'timeout': 20,  # or some number of seconds
-    }
+            'timeout': 20,
+        }
     }
 }
 
@@ -131,17 +113,25 @@ DATABASES = {
 # Password validation
 # ---------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 # ---------------------------
 # Internationalization
 # ---------------------------
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
@@ -149,9 +139,3 @@ USE_TZ = True
 # Default primary key field type
 # ---------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATICFILES_DIRS = [
-    BASE_DIR / "core" / "static",
-]
-USE_TZ = True
-TIME_ZONE = 'Asia/Kolkata'
-

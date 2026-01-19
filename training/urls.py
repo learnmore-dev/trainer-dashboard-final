@@ -13,7 +13,11 @@ urlpatterns = [
 
     # ================= DASHBOARDS =================
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('trainer-dashboard/', views.trainer_dashboard, name='trainer_dashboard'),
+   path(
+        "trainer/dashboard/",
+        views.trainer_dashboard,
+        name="trainer_dashboard"
+    ),
     # Add this to urlpatterns in urls.py
     path('api/trainer-batches/', views.get_trainer_batches, name='get_trainer_batches'),
 

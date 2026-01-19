@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
-#<<<<<<< HEAD
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .models import Batch, WorkSession, Attendance, TrainerAttendance
@@ -23,12 +22,6 @@ from django.shortcuts import redirect
 
 
     
-#=======
-from .models import Batch, WorkSession, Attendance
-import json
-from datetime import datetime, timedelta
-
-#>>>>>>> origin/main
 # ✅ TIMEZONE FUNCTIONS
 def get_indian_time():
     """Get current time in Indian timezone"""
@@ -255,7 +248,6 @@ def logout_view(request):
 @login_required
 def trainer_dashboard(request):
     trainer = request.user
-#<<<<<<< HEAD
 
     batches = Batch.objects.all() if request.user.is_superuser else Batch.objects.filter(trainer=trainer)
 
@@ -286,45 +278,10 @@ def trainer_dashboard(request):
         'sessions': recent_sessions,
         'total_hours': total_worked_hours,
         'hours_week': weekly_hours,
-#=======
-    
-    if request.user.is_superuser:
-        batches = Batch.objects.all()
-    else:
-        batches = Batch.objects.filter(trainer=trainer)
-    
-    sessions = WorkSession.objects.filter(trainer=trainer).order_by('-start_time')[:10]
-    
-    total_hours = 0
-    all_sessions = WorkSession.objects.filter(trainer=trainer)
-    for session in all_sessions:
-        total_hours += session.hours_spent
-    
-    today = timezone.now()
-    start_of_week = today - timedelta(days=today.weekday())
-    
-    sessions_this_week = WorkSession.objects.filter(
-        trainer=trainer,
-        start_time__gte=start_of_week
-    )
-    
-    hours_week = 0
-    for session in sessions_this_week:
-        hours_week += session.hours_spent
-    
-    attendance_status = check_today_login(trainer)
-    
-    context = {
-        'batches': batches,
-        'sessions': sessions,
-        'total_hours': round(total_hours, 2),
-        'hours_week': round(hours_week, 2),
-#>>>>>>> origin/main
         'attendance_status': attendance_status,
     }
     return render(request, 'training/trainer_dashboard.html', context)
 
-#<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
@@ -352,48 +309,22 @@ def admin_dashboard(request):
 
     total_sessions = WorkSession.objects.count()
 
-#=======
-@login_required
-def admin_dashboard(request):
-    if not request.user.is_superuser:
-        return redirect('trainer_dashboard')
-    
-    #from django.contrib.auth.models import User
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-    batches = Batch.objects.all()
-    trainers = User.objects.filter(is_staff=True)
-    total_sessions = WorkSession.objects.count()
-    
-#>>>>>>> origin/main
     context = {
         'batches': batches,
         'trainers': trainers,
         'total_sessions': total_sessions,
-#<<<<<<< HEAD
         'selected_trainer': trainer_filter,
-#=======
-#>>>>>>> origin/main
     }
     return render(request, 'training/admin_dashboard.html', context)
 
 @login_required
 def batch_list(request):
-#<<<<<<< HEAD
     batches = Batch.objects.all() if request.user.is_superuser else Batch.objects.filter(trainer=request.user)
-#=======
-    if request.user.is_superuser:
-        batches = Batch.objects.all()
-    else:
-        batches = Batch.objects.filter(trainer=request.user)
-    
-#>>>>>>> origin/main
     return render(request, 'training/batch_list.html', {'batches': batches})
 
 @login_required
 def batch_detail(request, batch_id):
     batch = get_object_or_404(Batch, id=batch_id)
-#<<<<<<< HEAD
 
     if not request.user.is_superuser and batch.trainer != request.user:
         return redirect('batch_list')
@@ -740,68 +671,11 @@ def trainer_batch_list(request):
 @login_required
 def get_trainer_batches(request):
     """API endpoint to get trainer's batches"""
-#=======
-    
-    if not request.user.is_superuser and batch.trainer != request.user:
-        return redirect('batch_list')
-    
-    sessions = batch.sessions.all().order_by('-start_time')
-    
-    total_hours = 0
-    for session in sessions:
-        total_hours += session.hours_spent
-    
-    context = {
-        'batch': batch,
-        'sessions': sessions,
-        'total_hours': round(total_hours, 2),
-    }
-    return render(request, 'training/batch_detail.html', context)
-
-@login_required
-def session_create(request):
-    if request.method == 'POST':
-        batch_id = request.POST.get('batch')
-        start_time_str = request.POST.get('start_time')
-        end_time_str = request.POST.get('end_time')
-        description = request.POST.get('description', '')
-        
-        try:
-            batch = Batch.objects.get(id=batch_id)
-            
-            if not request.user.is_superuser and batch.trainer != request.user:
-                return render(request, 'training/session_create.html', {
-                    'error': 'You do not have permission to add sessions to this batch',
-                    'batches': Batch.objects.filter(trainer=request.user)
-                })
-            
-            from datetime import datetime
-            start_time = datetime.strptime(start_time_str, '%Y-%m-%dT%H:%M')
-            end_time = datetime.strptime(end_time_str, '%Y-%m-%dT%H:%M')
-            
-            session = WorkSession.objects.create(
-                trainer=request.user,
-                batch=batch,
-                start_time=start_time,
-                end_time=end_time,
-                description=description
-            )
-            
-            return redirect('batch_detail', batch_id=batch_id)
-            
-        except Exception as e:
-            return render(request, 'training/session_form.html', {
-                'error': str(e),
-                'batches': Batch.objects.filter(trainer=request.user) if not request.user.is_superuser else Batch.objects.all()
-            })
-    
-#>>>>>>> origin/main
     if request.user.is_superuser:
         batches = Batch.objects.all()
     else:
         batches = Batch.objects.filter(trainer=request.user)
     
-#<<<<<<< HEAD
     batch_list = [
         {
             'id': batch.id,
@@ -820,6 +694,3 @@ def leave_create(request):
 
 def session_form(request, batch_id=None):
     return session_create(request, batch_id)
-#=======
-    return render(request, 'training/session_form.html', {'batches': batches})
-#>>>>>>> origin/main
